@@ -8,7 +8,7 @@
 
 **wooshh** is a replacement for `time` written in [Rust](https://www.rust-lang.org/).
 
-[![build](https://github.com/mehuaniket/wooshh/actions/workflows/ci.yml/badge.svg)](https://github.com/mehuaniket/wooshh/actions/workflows/ci.yml)
+[![Release](https://github.com/mehuaniket/wooshh/actions/workflows/release.yml/badge.svg?branch=main&event=release)](https://github.com/mehuaniket/wooshh/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/mehuaniket/woosh/branch/master/graph/badge.svg)](https://codecov.io/gh/mehuaniket/woosh)
 [![Changelog](https://img.shields.io/badge/changelog-v0.1.0-green.svg)](https://github.com/mehuaniket/woosh/blob/master/CHANGELOG.md)
 [![homebrew](https://img.shields.io/homebrew/v/wooshh.svg)](https://formulae.brew.sh/formula/wooshh)

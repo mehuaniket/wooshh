@@ -27,9 +27,9 @@ jobs:
             os: ubuntu-latest
           - target: x86_64-apple-darwin
             os: macos-latest
-          - target: aarch64-unknown-linux-gnu
-            os: ubuntu-18.04
-            audio_backend: alsa_backend
+          # - target: aarch64-unknown-linux-gnu
+          #   os: ubuntu-latest
+          #   audio_backend: alsa_backend
           - target: aarch64-apple-darwin
             os: macos-latest
           # Universal macOS binary is supported as universal-apple-darwin.
@@ -38,16 +38,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - name: Install alsa
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-18.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y -qq libasound2-dev libssl-dev libpulse-dev libdbus-1-dev
+        run: sudo apt-get install libasound2-dev
+      - name: Install libjack
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-18.04'
+        run: sudo apt-get install libjack-jackd2-dev libjack-jackd2-0
       - name: Installing needed Ubuntu armhf dependencies
-        if: matrix.os == 'ubuntu-18.04' && matrix.target == 'aarch64-unknown-linux-gnu'
+        if: matrix.os == 'ubuntu-latest' && matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
           sudo mkdir -p /build/sysroot
-          echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports/ bionic main" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports/ jammy main" | sudo tee -a /etc/apt/sources.list
           sudo apt-get update
           sudo apt-get install -y -qq gcc-arm-linux-gnueabihf libc6-armhf-cross libc6-dev-armhf-cross
           sudo apt-get download libasound2:armhf libasound2-dev:armhf libssl-dev:armhf libssl1.1:armhf
@@ -62,7 +63,7 @@ jobs:
           echo "OPENSSL_LIB_DIR=/build/sysroot/usr/lib/arm-linux-gnueabihf" >> $GITHUB_ENV
           echo "OPENSSL_INCLUDE_DIR=/build/sysroot/usr/include/arm-linux-gnueabihf" >> $GITHUB_ENV
       - name: Installing needed Ubuntu armhf dependencies (full)
-        if: matrix.os == 'ubuntu-18.04' && matrix.target == 'aarch64-unknown-linux-gnu'
+        if: matrix.os == 'ubuntu-latest' && matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
           # Make dbus-rs cross-compile, see https://github.com/diwic/dbus-rs/issues/184#issuecomment-520228758
           sudo apt-get download libdbus-1-dev:armhf libdbus-1-3:armhf libsystemd0:armhf libgcrypt20:armhf liblzma5:armhf liblz4-1:armhf libgpg-error0:armhf
@@ -82,9 +83,7 @@ jobs:
           sudo ln -rs /build/sysroot/usr/lib/arm-linux-gnueabihf/liblz4.so.1 /build/sysroot/usr/lib/arm-linux-gnueabihf/liblz4.so
           sudo mkdir -p /.cargo
           echo -e '[target.arm-unknown-linux-gnueabihf.dbus]\nrustc-link-lib = ["dbus-1", "gcrypt", "gpg-error", "lz4", "lzma", "systemd"]' | sudo tee -a /.cargo/config
-      - name: Installing needed macOS dependencies
-        if: matrix.os == 'macos-latest' 
-        run: brew install awk dbus pkg-config portaudio
+
       - name: Install cross-compilation tools
         uses: taiki-e/setup-cross-toolchain-action@v1
         with:

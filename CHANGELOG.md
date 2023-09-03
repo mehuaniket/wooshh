@@ -1,3 +1,7 @@
+# [v0.3.0]
+
+- Updated apple darwin to resolve apple brew tap install errors.
+
 # [v0.2.0]
 
 - Updated release workflow and released for all platform.

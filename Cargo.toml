@@ -1,6 +1,6 @@
 [package]
 name = "wooshh"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Aniket Patel <velvety.03-wonders@icloud.com>"]
 license = "MIT"

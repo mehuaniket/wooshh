@@ -97,6 +97,5 @@ jobs:
           # (optional) Target triple, default is host triple.
           target: ${{ matrix.target }}
           archive: $bin-$tag-$target
-          include: LICENSE,README.md
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GH_PAT }}

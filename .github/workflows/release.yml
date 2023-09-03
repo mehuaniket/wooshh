@@ -39,10 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install alsa
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-latest' 
         run: sudo apt-get install libasound2-dev
       - name: Install libjack
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install libjack-jackd2-dev libjack-jackd2-0
       - name: Installing needed Ubuntu armhf dependencies
         if: matrix.os == 'ubuntu-latest' && matrix.target == 'aarch64-unknown-linux-gnu'

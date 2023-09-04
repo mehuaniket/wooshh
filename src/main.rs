@@ -6,6 +6,8 @@ use std::io::BufWriter;
 use std::io::Write;
 use std::process::{Command, Stdio};
 use std::time::Instant;
+use std::path::Path;
+use reqwest::blocking::Client;
 
 // Define a Cli struct to hold command line arguments
 #[derive(Parser)]
@@ -32,7 +34,31 @@ struct Cli {
     output: Option<String>,
 }
 
+fn download_file(url: &str, path: &Path) {
+    let client = Client::new();
+
+    if !path.exists() {
+        let response = client.get(url).send().unwrap();
+
+        if response.status().is_success() {
+            let mut file = File::create(path).unwrap();
+            let bytes = response.bytes().unwrap();
+            file.write(&bytes).unwrap();
+        }
+    }
+}
+
 fn main() {
+    
+    let url_success = "https://mehuaniket.github.io/tools/downloads/wooshh/success-trumpets.mp3";
+    let path_success = Path::new("success-trumpets.mp3");
+
+    let url_error = "https://mehuaniket.github.io/tools/downloads/wooshh/beep-warning.mp3";
+    let path_error = Path::new("beep-warning.mp3");
+
+    download_file(url_success, path_success);
+    download_file(url_error, path_error);
+
     // Create a new Audio instance
     let mut audio = Audio::new();
     // Add a success sound to the Audio instance

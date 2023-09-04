@@ -23,6 +23,7 @@ openssl-sys = { version = "0.9", features = ["vendored"] }
 requestty = "0.5"
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.7"
+reqwest = { version = "0.11.20", features = ["blocking"] }
 
 
 [dev-dependencies]

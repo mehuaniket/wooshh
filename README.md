@@ -44,6 +44,15 @@
 curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git mehuaniket/wooshh --tag v0.2.0
 ```
 
+For mac os:
+
+```
+brew tap mehuaniket/tools https://github.com/mehuaniket/tools.git
+
+brew untap mehuaniket/toools
+
+brew install mehuaniket/tools/wooshh
+```
 ## Usage 
 
 :book:

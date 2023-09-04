@@ -25,20 +25,17 @@
 
 ## Features 
 
-:loud_sound:
 * Get time it took to run the command
 * It plays sound when command finishes. You don't need to wait on the terminal.
 
 ## Platform 
 
-:computer:
 
 * Linux is supported.
 * macOS is experimentally supported.
 
 ## Installation
 
-:arrow_double_down:
 
 ```
 curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git mehuaniket/wooshh --tag v0.2.0
@@ -55,7 +52,6 @@ brew install mehuaniket/tools/wooshh
 ```
 ## Usage 
 
-:book:
 
 This is a Rust program that measures the time it takes for a command to execute and play sound when command finishes. The program uses the `clap` crate to parse command line arguments and the `rusty_audio` crate to play audio files when the command finishes executing.
 

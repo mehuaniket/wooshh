@@ -1,3 +1,7 @@
+# [v0.3.0]
+
+- feat: more features to run tests and notifications
+
 # [v0.2.1]
 
 - Added support to download file if it doesn't exist.

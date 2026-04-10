@@ -10,7 +10,7 @@
 
 [![Release](https://github.com/mehuaniket/wooshh/actions/workflows/release.yml/badge.svg)](https://github.com/mehuaniket/wooshh/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/mehuaniket/woosh/branch/main/graph/badge.svg)](https://codecov.io/gh/mehuaniket/woosh)
-[![Changelog](https://img.shields.io/badge/changelog-v0.2.1-green.svg)](https://github.com/mehuaniket/woosh/blob/main/CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/changelog-v0.4.0-green.svg)](https://github.com/mehuaniket/woosh/blob/main/CHANGELOG.md)
 [![homebrew](https://img.shields.io/homebrew/v/wooshh.svg)](https://formulae.brew.sh/formula/wooshh)
 <!-- [![Crates.io](https://img.shields.io/crates/v/wooshh.svg)](https://crates.io/crates/wooshh) -->
 <!-- [![wooshh](https://snapcraft.io/wooshh/badge.svg)](https://snapcraft.io/wooshh) -->

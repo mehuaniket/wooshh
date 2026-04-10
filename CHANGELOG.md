@@ -1,3 +1,7 @@
+# [v0.4.0]
+
+- feat: supported intel processor for mac app
+
 # [v0.3.0]
 
 - feat: more features to run tests and notifications

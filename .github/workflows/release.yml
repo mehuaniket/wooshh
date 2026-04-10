@@ -115,7 +115,7 @@ jobs:
           cp "target/${TARGET}/release/wooshh" "${STAGE_DIR}/wooshh"
 
           chmod +x notifier-macos/build-notifier.sh
-          ./notifier-macos/build-notifier.sh
+          WOOSHH_NOTIFIER_TARGET="${TARGET}" ./notifier-macos/build-notifier.sh
           cp -R notifier-macos/WooshhNotifier.app "${STAGE_DIR}/WooshhNotifier.app"
 
           tar -C "release-stage" -czf "${BUNDLE_NAME}.tar.gz" "${BUNDLE_NAME}"

@@ -115,6 +115,7 @@ fi
 say_err "Crate: $crate"
 
 url="$url/releases"
+releases_url="$url"
 
 if [ -z $tag ]; then
     tag=$(curl -s "$url/latest" | cut -d'"' -f2 | rev | cut -d'/' -f1 | rev)
@@ -135,7 +136,7 @@ fi
 
 say_err "Installing to: $dest"
 
-url="$url/download/$tag/$crate-$tag-$target.tar.gz"
+url="$releases_url/download/$tag/$crate-$tag-$target.tar.gz"
 
 td=$(mktemp -d || mktemp -d -t tmp)
 curl -sL $url | tar -C $td -xz
@@ -150,5 +151,37 @@ for f in $(ls $td); do
         install -m 755 $td/$f $dest
     fi
 done
+
+# macOS native notifier bundle support
+if [ "$(uname -s)" = "Darwin" ]; then
+    bundle_url="$releases_url/download/$tag/wooshh-bundle-$tag-$target.tar.gz"
+    bundle_td=$(mktemp -d || mktemp -d -t tmp)
+
+    if curl -sLf "$bundle_url" | tar -C "$bundle_td" -xz; then
+        set -- "$bundle_td"/*
+        bundle_root=$(basename "$1")
+        notifier_src="$bundle_td/$bundle_root/WooshhNotifier.app"
+        if [ -d "$notifier_src" ]; then
+            app_dest="/Applications/WooshhNotifier.app"
+            if [ -w "/Applications" ]; then
+                rm -rf "$app_dest"
+                cp -R "$notifier_src" "$app_dest"
+                say_err "Installed native notifier to $app_dest"
+                say_err "Run once to register notifications: open \"$app_dest\""
+            else
+                user_app_dest="$HOME/Applications/WooshhNotifier.app"
+                mkdir -p "$HOME/Applications"
+                rm -rf "$user_app_dest"
+                cp -R "$notifier_src" "$user_app_dest"
+                say_err "Installed native notifier to $user_app_dest"
+                say_err "Run once to register notifications: open \"$user_app_dest\""
+            fi
+        fi
+    else
+        say_err "macOS notifier bundle not found for this release; continuing with CLI-only install"
+    fi
+
+    rm -rf "$bundle_td"
+fi
 
 rm -rf $td

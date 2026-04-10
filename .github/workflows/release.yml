@@ -99,3 +99,24 @@ jobs:
           archive: $bin-$tag-$target
           # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GH_PAT }}
+
+      - name: Build and upload macOS bundle asset
+        if: startsWith(matrix.target, 'x86_64-apple-darwin') || startsWith(matrix.target, 'aarch64-apple-darwin')
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          TARGET="${{ matrix.target }}"
+          BUNDLE_NAME="wooshh-bundle-${TAG_NAME}-${TARGET}"
+          STAGE_DIR="release-stage/${BUNDLE_NAME}"
+          mkdir -p "${STAGE_DIR}"
+
+          cargo build --release --target "${TARGET}"
+          cp "target/${TARGET}/release/wooshh" "${STAGE_DIR}/wooshh"
+
+          chmod +x notifier-macos/build-notifier.sh
+          ./notifier-macos/build-notifier.sh
+          cp -R notifier-macos/WooshhNotifier.app "${STAGE_DIR}/WooshhNotifier.app"
+
+          tar -C "release-stage" -czf "${BUNDLE_NAME}.tar.gz" "${BUNDLE_NAME}"
+          gh release upload "${TAG_NAME}" "${BUNDLE_NAME}.tar.gz" --clobber

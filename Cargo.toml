@@ -18,12 +18,11 @@ path = "src/main.rs"
 [dependencies]
 clap = { version = "4.4.1", features = ["derive"] }
 humantime = "2.1.0"
-rusty_audio = "1.4.1"
 openssl-sys = { version = "0.9", features = ["vendored"] }
 requestty = "0.5"
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 toml = "0.7"
-reqwest = { version = "0.11.20", features = ["blocking"] }
 
 
 [dev-dependencies]

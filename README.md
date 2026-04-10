@@ -25,8 +25,15 @@
 
 ## Features 
 
-* Get time it took to run the command
-* It plays sound when command finishes. You don't need to wait on the terminal.
+* Time command execution like `time`, with success/failure sound cues
+* Smart notifications: only on failure or only above a duration threshold
+* Desktop notifications (macOS/Linux) with command, duration, and exit code
+* History tracking for run analytics
+* `stats`, `slowest`, and `regressions` insights from local run history
+* `compare` mode for quick performance checks (median + stddev)
+* Optional command tags for grouping and tracking
+* `--quiet` and `--json` output modes
+* Lightweight failure hints for common toolchains (`cargo`, `npm`, etc.)
 
 ## Platform 
 
@@ -55,18 +62,116 @@ brew untap mehuaniket/toools
 ```
 ## Usage 
 
-
-This is a Rust program that measures the time it takes for a command to execute and play sound when command finishes. The program uses the `clap` crate to parse command line arguments and the `rusty_audio` crate to play audio files when the command finishes executing.
-
-To use this program, you need to pass a command and its arguments as command line arguments to the program. You can also specify optional flags for appending to an output file and specifying an output file.
-
-Here is an example of how to use the program:
+Run any command:
 
 ```
 wooshh sleep 10
 ```
 
-It will give you the same result as time command but it play music :musical_note: 🔊
+### Notify controls
+
+Only notify when command is slow:
+
+```
+wooshh --notify-if-over 30s cargo test
+```
+
+Only notify on failure:
+
+```
+wooshh --on-failure-only cargo test
+```
+
+### Output modes
+
+Quiet mode (no timing lines, still runs notifications):
+
+```
+wooshh --quiet npm run build
+```
+
+JSON output:
+
+```
+wooshh --json cargo check
+```
+
+Write output to file:
+
+```
+wooshh -o out.txt cargo test
+wooshh -a -o out.txt cargo test
+```
+
+### Tags and history
+
+Tag a run:
+
+```
+wooshh --tag build cargo build
+```
+
+Skip history write:
+
+```
+wooshh --no-history cargo test
+```
+
+History-backed insights:
+
+```
+wooshh stats
+wooshh slowest -n 10
+wooshh regressions -n 10
+```
+
+### Compare mode
+
+Run a command multiple times and report median/stddev:
+
+```
+wooshh compare -n 5 cargo check
+```
+
+### Notes
+
+* History file is stored at `~/.config/wooshh/history.toml`.
+* `user/sys` fields currently stay `0.00`; `real` is measured accurately.
+* On macOS, `wooshh` prefers a native helper app for notifications when available.
+* Shell helper example:
+
+```
+alias w='wooshh --notify-if-over 20s'
+w cargo test
+```
+
+## macOS Native Notification Setup
+
+For the most reliable macOS notifications, build and use the bundled native helper:
+
+```
+cd notifier-macos
+chmod +x build-notifier.sh
+./build-notifier.sh
+```
+
+Run once to allow macOS to register the app identity:
+
+```
+open WooshhNotifier.app
+```
+
+Then test with `wooshh`:
+
+```
+cargo run -- --notify-if-over 0s sleep 1
+```
+
+Optional: use a custom location via env var:
+
+```
+WOOSHH_NOTIFIER_PATH="/path/to/WooshhNotifier.app/Contents/MacOS/wooshh-notifier" wooshh --notify-if-over 0s sleep 1
+```
 ## License
 
 This program is licensed under the MIT license.

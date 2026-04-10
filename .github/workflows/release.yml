@@ -17,7 +17,7 @@ jobs:
         with:
           changelog: CHANGELOG.md
           title: $version
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ github.token }}
 
   upload-assets:
     strategy:
@@ -98,12 +98,12 @@ jobs:
           target: ${{ matrix.target }}
           archive: $bin-$tag-$target
           # (required) GitHub token for uploading assets to GitHub Releases.
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ github.token }}
 
       - name: Build and upload macOS bundle asset
         if: startsWith(matrix.target, 'x86_64-apple-darwin') || startsWith(matrix.target, 'aarch64-apple-darwin')
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           TAG_NAME="${GITHUB_REF_NAME}"
           TARGET="${{ matrix.target }}"
